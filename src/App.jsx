@@ -1,25 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Newsletter } from './Newsletter.jsx'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { PropTypes } from "prop-types";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import MainComponent from "./components/MainComponent";
+import Blog from "./pages/Blog";
+import SingleBlog from "./pages/SingleBlog";
 
-function App() {
-
+const Layout = ({ children }) => {
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1 style={{color: 'white'}}>Vite + React</h1>
-      <Newsletter />
+      <Header />
+      {children}
+      <Footer />
     </>
-  )
-}
+  );
+};
 
-export default App
+const App = () => {
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          <Route
+            path="/"
+            element={<MainComponent title={"Home"} desc={"Home Page"} />}
+          />
+          <Route
+            path="/about"
+            element={<MainComponent title={"About"} desc={"About Page"} />}
+          />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:name" element={<SingleBlog />} />
+          <Route
+            path="/contact"
+            element={<MainComponent title={"Contact"} desc={"Contact Page"} />}
+          />
+        </Routes>
+      </Layout>
+    </Router>
+  );
+};
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default App;
